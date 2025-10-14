@@ -51,8 +51,8 @@ def getVideoIDs():
     while page_token != 0:
         params = {"key": my_key, 'channelId': channel_id, 'part': ["snippet","id"], 'order': "date", 'maxResults':50, 'pageToken': page_token}
         response = requests.get(url, params=params)
-        print(response.status_code)
-        print(response.text)
+        #print(response.status_code)
+        #print(response.text)
 
 
         # append video records to list
@@ -90,7 +90,7 @@ def getVideoTranscripts():
     """
 
 
-    df = pl.read_parquet('app/data/video-ids.parquet')
+    df = pl.read_parquet('data/video-ids.parquet')
 
     transcript_text_list = []
 
@@ -110,7 +110,7 @@ def getVideoTranscripts():
     df = df.with_columns(pl.Series(name="transcript", values=transcript_text_list))
 
     # write dataframe to file
-    df.write_parquet('app/data/video-transcripts.parquet')
+    df.write_parquet('data/video-transcripts.parquet')
 
 
 def handleSpecialStrings(df: pl.dataframe.frame.DataFrame) -> pl.dataframe.frame.DataFrame:
@@ -153,12 +153,12 @@ def transformData():
             - setDatatypes()
     """
 
-    df = pl.read_parquet('app/data/video-transcripts.parquet')
+    df = pl.read_parquet('data/video-transcripts.parquet')
 
     df = handleSpecialStrings(df)
     df = setDatatypes(df)
 
-    df.write_parquet('app/data/video-transcripts.parquet')
+    df.write_parquet('data/video-transcripts.parquet')
 
 def createTextEmbeddings():
     """
@@ -166,7 +166,7 @@ def createTextEmbeddings():
     """
 
     # read data from file
-    df = pl.read_parquet('app/data/video-transcripts.parquet')
+    df = pl.read_parquet('data/video-transcripts.parquet')
 
     # define embedding model and columns to embed
     # model_path = 'app/data/all-MiniLM-L6-v2'
@@ -187,4 +187,4 @@ def createTextEmbeddings():
         df = pl.concat([df, df_embedding], how='horizontal')
 
     # write data to file
-    df.write_parquet('app/data/video-index.parquet')
+    df.write_parquet('data/video-index.parquet')
