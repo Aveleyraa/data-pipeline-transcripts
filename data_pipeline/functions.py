@@ -51,6 +51,9 @@ def getVideoIDs():
     while page_token != 0:
         params = {"key": my_key, 'channelId': channel_id, 'part': ["snippet","id"], 'order': "date", 'maxResults':50, 'pageToken': page_token}
         response = requests.get(url, params=params)
+        print(response.status_code)
+        print(response.text)
+
 
         # append video records to list
         video_record_list += getVideoRecords(response)
