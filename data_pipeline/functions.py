@@ -66,7 +66,7 @@ def getVideoIDs():
             page_token = 0
 
     # write videos ids as parquet file
-    pl.DataFrame(video_record_list).write_parquet('app/data/video-ids.parquet')
+    pl.DataFrame(video_record_list).write_parquet('data/video-ids.parquet')
 
 
 def extractTranscriptText(transcript: list) -> str:
@@ -83,7 +83,7 @@ def extractTranscriptText(transcript: list) -> str:
 
 def getVideoTranscripts():
     """
-        Function to extract transcripts for all video IDs stored in "app/data/video-ids.parquet"
+        Function to extract transcripts for all video IDs stored in "data/video-ids.parquet"
 
         Dependencies:
             - extractTranscriptText()
